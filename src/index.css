@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-sans: "Archivo", system-ui, sans-serif;
+
+  /* Background */
+  --color-bg-darkest: #070C1C;          
+  --color-bg-medium: #1E2031;     
+  --color-bg-brighter: #2A2C3D;   
+
+
+  /* Text */
+  --color-tx-white: #ffffff;
+  --color-tx-gray: #A9A9A9;   
+  --color-tx-blue: #505261;    
+
+  /* Halper colors */
+  --color-hc-red: #EC3013;
+  --color-hc-green: #4ADE80;
+  --color-hc-orange: #E27E04;
+
+  /* Tint */
+  --color-tint-white: #ffffff1a;   /* white, 10% */
+  --color-tint-pink:  #ec30131a;   /* #EC3013, 10% */
+  --color-tint-green: #4ade801a;   /* #4ADE80, 10% */
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;   /* old Edge/IE */
+  scrollbar-width: none;      /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;            /* Chrome, Safari, new Edge */
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 3.18rem; 
+}
+
+
+
+@layer base {
+  html {
+    font-size: calc(100vw / 108);
+    background-color: var(--color-bg-darkest);
+    color: var(--color-tx-white);
+  }
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+}
