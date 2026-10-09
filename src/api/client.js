@@ -1,5 +1,5 @@
-const BASE = import.meta.env.VITE_API_URL
-
+const BASE =
+  import.meta.env.VITE_API_URL ?? 'https://api.kinoxii.redberryinternship.ge/api'
 export class ApiError extends Error {
   constructor(status, body) {
     super(body?.message || 'Request failed')
