@@ -9,3 +9,5 @@ export const getComingSoon = () => request('/movies/coming-soon').then(unwrap)
 export const getMovie = (slug) => request(`/movies/${slug}`).then(unwrap)
 export const notifyMovie = (slug) =>
   request(`/movies/${slug}/notify`, { method: 'POST' })
+  export const getMovieSessions = (slug, date) =>
+  request(`/movies/${slug}/sessions?date=${date}`).then((r) => r.data)

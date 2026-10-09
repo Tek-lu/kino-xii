@@ -10,7 +10,7 @@ export default function Navbar() {
   // ...header, logo, nav and search stay as they are
   const openLogin = () => {}
   const openRegister = () => {}
-
+  
   return (
     <header className="absolute inset-x-0 top-0 z-30 bg-gradient-to-b from-bg-darkest/80 to-transparent">
       <div className="container-page flex h-20 items-center gap-10">
