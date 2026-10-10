@@ -17,17 +17,22 @@ export default function NowPlaying() {
       {isPending && (
         <div className="flex gap-6 overflow-hidden">
           {Array.from({ length: 6 }, (_, i) => (
-            <Skeleton key={i} className="h-[520px] w-[290px] shrink-0" />
+            <Skeleton key={i} className="h-[28.25rem] w-[16.25rem] shrink-0" />
           ))}
         </div>
       )}
       {isError && <ErrorState message="Couldn't load films." onRetry={refetch} />}
       {data?.length === 0 && <EmptyState title="Nothing is playing right now" text="Check back soon." />}
       {data?.length > 0 && (
-        <div className="no-scrollbar flex gap-6 overflow-x-auto">          
-        {data.map((m) => (
-            <MovieCard key={m.id} movie={m} />
-          ))}
+        <div className="relative">
+          <div className="no-scrollbar flex gap-4 overflow-x-auto">
+            {data.map((m) => (
+              <MovieCard key={m.id} movie={m} />
+            ))}
+          </div>
+            
+          {/* fade on the right edge */}
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-[10rem] bg-gradient-to-l from-bg-darkest to-transparent" />
         </div>
       )}
     </Section>

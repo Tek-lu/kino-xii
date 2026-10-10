@@ -14,29 +14,30 @@ export default function RecentlyViewed() {
 
   return (
     <Section title="Recently viewed">
-      <div className="no-scrollbar flex gap-[1.5rem] overflow-x-auto">
+      <div className="relative no-scrollbar flex gap-[1.25rem] overflow-x-auto">
         {items.map((m) => (
           <Link
             key={m.id}
             to={`/movies/${m.slug}`}
-            className="flex w-[22rem] shrink-0 items-center gap-[1rem] rounded-[1rem] bg-bg-medium p-[0.75rem] transition-opacity hover:opacity-90"
+            className="flex w-[21rem] shrink-0 items-center gap-[0.75rem] rounded-[1rem] bg-bg-medium p-[0.75rem] transition-opacity hover:opacity-90"
           >
             <img
               src={m.posterUrl}
               alt={m.title}
-              className="h-[5rem] w-[3.75rem] rounded-[0.5rem] object-cover"
+              className="h-[4.2rem] w-[5.5rem] rounded-[0.5rem] object-cover"
             />
-            <div className="min-w-0">
-              <h3 className="truncate text-[0.75rem] font-extrabold uppercase">{m.title}</h3>
-              <p className="mt-[0.25rem] truncate text-[0.625rem] text-tx-gray">
+            <div className="min-w-0 mt-1">
+              <h3 className="truncate text-[0.875rem] font-extrabold uppercase">{m.title}</h3>
+              <p className="mt-[0.25rem] truncate text-[0.75rem] text-tx-gray">
                 {m.genre} · {m.runtimeMinutes} min
               </p>
-              <div className="mt-[0.5rem]">
-                <AgeBadge rating={m.ageRating} />
-              </div>
+                <AgeBadge className="h-[1.3rem] w-[2.4rem] px-[0.625rem] py-[0.3125rem]" rating={m.ageRating} />
+
             </div>
           </Link>
         ))}
+                  <div className="pointer-events-none absolute inset-y-0 right-0 w-[10rem] bg-gradient-to-l from-bg-darkest to-transparent" />
+
       </div>
     </Section>
   )

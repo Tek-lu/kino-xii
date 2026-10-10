@@ -24,12 +24,16 @@ export default function ComingSoon() {
       {isError && <ErrorState message="Couldn't load upcoming films." onRetry={refetch} />}
       {data?.length === 0 && <EmptyState title="No upcoming releases yet" />}
       {data?.length > 0 && (
-        <div className="no-scrollbar flex gap-6 overflow-x-auto">          
-        {data.map((m) => (
+        <div className='relative'>
+          <div className="no-scrollbar flex gap-6 overflow-x-auto">          
+            {data.map((m) => (
             <ComingSoonCard key={m.id} movie={m} />
-          ))}
+            ))}
+          </div>
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-[10rem] bg-gradient-to-l from-bg-darkest to-transparent" />
+
         </div>
-      )}
+       )}  
     </Section>
   )
 }

@@ -1,4 +1,4 @@
-const MAX = 6
+const MAX = 12
 const key = (uid) => `recent:${uid ?? 'guest'}`
 
 export function getRecent(uid) {

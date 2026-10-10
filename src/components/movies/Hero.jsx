@@ -5,6 +5,8 @@ import { getFeatured, getMovie } from '../../api/movies'
 import AgeBadge from '../ui/AgeBadge'
 import Skeleton from '../ui/Skeleton'
 import ErrorState from '../ui/ErrorState'
+import TimerLogo from '../../assets/timer.svg'
+import TicketLogo from '../../assets/ticket.svg'
 
 const INTERVAL = 7000
 
@@ -37,7 +39,7 @@ export default function Hero() {
   const go = (n) => setI((n + count) % count)
 
   return (
-    <section className="relative h-[720px] overflow-hidden">
+    <section className="relative h-[47.5rem] overflow-hidden">
       {films.map((f, idx) => (
         <img
           key={f.id}
@@ -52,36 +54,40 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-r from-bg-darkest/80 to-transparent" />
 
       <div className="container-page absolute inset-x-0 bottom-28">
-        <h1 className="max-w-[700px] text-[48px] font-extrabold uppercase leading-[1.1]">{film.title}</h1>
+        <h1 className="text-[2.5rem] font-extrabold uppercase leading-[1.1]">{film.title}</h1>
 
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <AgeBadge rating={film.ageRating} />
-          <span className="rounded bg-tint-white px-2 py-0.5 text-[12px] font-semibold">
-            {film.runtimeMinutes} min
+          <AgeBadge className='h-[1.7rem] w-[2.875rem] px-3 py-0.6' rating={film.ageRating} />
+          <span className="rounded-full bg-tint-white px-[0.625rem] py-[0.3125rem] text-[0.75rem] font-semibold flex">
+                <img src={TimerLogo} alt="" aria-hidden="true" className="h-[0.75rem] w-[0.75rem] mt-[3.5px]"/>
+
+              {film.runtimeMinutes} Min
           </span>
           {film.formats.map((f) => (
-            <span key={f.id} className="rounded bg-tint-white px-2 py-0.5 text-[12px] font-semibold uppercase">
+            <span key={f.id} className="rounded-full bg-tint-white px-[0.625rem] py-[0.3125rem] text-[0.75rem] font-semibold uppercase">
               {f.name}
             </span>
           ))}
         </div>
 
-        <p className="mt-4 line-clamp-3 max-w-[560px] min-h-[60px] text-[16px] font-normal leading-[1.3] text-tx-white/90">
+        <p className="mt-4 line-clamp-3 max-w-[560px] min-h-[60px] text-[1rem] font-normal leading-[1.3] text-tx-white">
           {detail?.synopsis}
         </p>
 
         <div className="mt-6 flex gap-3">
-          <Link to={`/movies/${film.slug}`} className="rounded-full bg-hc-red px-6 py-3 text-[12px] font-semibold">
+          <Link to={`/movies/${film.slug}`} className="rounded-full bg-hc-red px-[1.375rem] py-[0.812rem] text-[14px] font-extrabold flex gap-1">
+          <img src={TicketLogo} alt="" aria-hidden="true" className="h-[1rem] w-[1rem] "/>
+
             Buy tickets
           </Link>
-          <Link to="/sessions" className="rounded-full bg-tint-white px-6 py-3 text-[12px] font-semibold">
+          <Link to="/sessions" className="rounded-full bg-tint-white px-[1.375rem] py-[0.812rem] text-[14px] font-extrabold">
             All sessions
           </Link>
         </div>
       </div>
 
       {count > 1 && (
-        <div className="container-page absolute inset-x-0 bottom-8 flex items-center gap-4">
+        <div className="container-page absolute inset-x-0 bottom-[2rem] flex items-center gap-4">
           <div className="flex flex-1 gap-3">
             {films.map((f, idx) => (
               <button
