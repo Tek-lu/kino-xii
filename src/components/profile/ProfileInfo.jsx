@@ -75,9 +75,7 @@ export default function ProfileInfo() {
   return (
     <form onSubmit={onSubmit} noValidate className="flex w-[55rem] flex-col gap-y-[1.25rem] pt-[0.5rem]">
       {user.profileComplete ? (
-        <p className="w-fit rounded-[0.5rem] bg-tint-green px-[1rem] py-[0.5rem] text-[0.75rem] font-semibold text-hc-green">
-          Profile Complete ✓
-        </p>
+            <></>
       ) : (
         <p role="alert" className="rounded-[0.5rem] bg-hc-orange/10 px-[1rem] py-[0.75rem] text-[0.75rem] font-semibold text-hc-orange">
           {state?.notice ?? 'Please complete your profile to enable booking.'}

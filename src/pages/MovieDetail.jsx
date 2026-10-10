@@ -39,11 +39,14 @@ function NotifyBlock({ movie }) {
 
 export default function MovieDetail() {
   const { slug } = useParams()
-  const { user } = useAuth()
+  const { user, booting } = useAuth()
   const [picked, setPicked] = useState(null) // { slug, value }
   const movieQ = useQuery({ queryKey: ['movie', slug], queryFn: () => getMovie(slug) })
   const movie = movieQ.data
-
+  useEffect(() => {
+        if (movie && !booting) addRecent(user?.id, movie)
+      }, [movie, booting, user?.id])
+    
   const days = getNextDays()
   const available = movie?.availableDates ?? []
   const date =
