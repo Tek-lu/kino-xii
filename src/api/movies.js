@@ -11,3 +11,7 @@ export const notifyMovie = (slug) =>
   request(`/movies/${slug}/notify`, { method: 'POST' })
   export const getMovieSessions = (slug, date) =>
   request(`/movies/${slug}/sessions?date=${date}`).then((r) => r.data)
+
+
+export const searchMovies = (q) =>
+ request(`/search?q=${encodeURIComponent(q)}`, { gate: false }).then((r) => r.data)

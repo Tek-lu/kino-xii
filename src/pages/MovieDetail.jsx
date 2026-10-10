@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getMovie, getMovieSessions, notifyMovie } from '../api/movies'
@@ -11,7 +10,8 @@ import MovieSessions from '../components/movies/MovieSessions'
 import Skeleton from '../components/ui/Skeleton'
 import ErrorState from '../components/ui/ErrorState'
 import Button from '../components/ui/Button'
-
+import { useEffect, useState } from 'react'   
+import { addRecent } from '../utils/recent'
 function NotifyBlock({ movie }) {
   const { requireAuth } = useAuth()
   const qc = useQueryClient()
@@ -19,6 +19,7 @@ function NotifyBlock({ movie }) {
     mutationFn: () => notifyMovie(movie.slug),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['movie', movie.slug] }),
   })
+  
   return (
     <div className="mt-[1rem] flex flex-col items-start gap-[0.75rem]">
       <p className="text-[0.875rem] text-tx-gray">
@@ -40,7 +41,6 @@ export default function MovieDetail() {
   const { slug } = useParams()
   const { user } = useAuth()
   const [picked, setPicked] = useState(null) // { slug, value }
-
   const movieQ = useQuery({ queryKey: ['movie', slug], queryFn: () => getMovie(slug) })
   const movie = movieQ.data
 
@@ -57,6 +57,7 @@ export default function MovieDetail() {
     enabled: !!movie && !movie.isComingSoon,
     placeholderData: keepPreviousData,
   })
+  
 
   if (movieQ.isPending) return <Skeleton className="h-[36rem] w-full rounded-none" />
   if (movieQ.isError) {

@@ -37,3 +37,13 @@ export const expiryRule = (v) => {
 
 export const cvvRule = (v) =>
   !v ? 'CVV is required' : !/^\d{3}$/.test(v) ? 'CVV must be 3 digits' : undefined
+
+
+export const dobRule = (v) => {
+  if (!v) return 'Date of birth is required'
+  const dob = new Date(`${v}T00:00:00`)
+  const now = new Date()
+  if (isNaN(dob.getTime()) || dob > now) return 'Please enter a valid date of birth'
+  const cutoff = new Date(now.getFullYear() - 12, now.getMonth(), now.getDate())
+  return dob > cutoff ? 'You must be at least 12 years old to create an account' : undefined
+}

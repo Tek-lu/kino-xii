@@ -6,7 +6,6 @@ import { useForm } from '../../hooks/useForm'
 import { useAuth } from '../../hooks/useAuth'
 import { register } from '../../api/auth'
 import { emailRule, passwordRule, required } from '../../utils/validators'
-
 const ALLOWED = ['image/jpeg', 'image/png', 'image/webp']
 
 const rules = {
@@ -33,27 +32,30 @@ export default function RegisterModal() {
   const preview = useMemo(() => (avatar ? URL.createObjectURL(avatar) : null), [avatar])
   useEffect(() => () => preview && URL.revokeObjectURL(preview), [preview])
 
-  function onPick(e) {
-    const file = e.target.files?.[0]
+  async function onPick(e) {
+    const input = e.target
+    const file = input.files?.[0]
+    input.value = '' // otherwise picking the same file again does nothing
     if (!file) return
     if (!ALLOWED.includes(file.type)) {
       setAvatar(null)
       setAvatarError('Avatar must be a JPG, PNG or WebP image')
-    } else if (file.size > 2 * 1024 * 1024) {
-      setAvatar(null)
-      setAvatarError('Avatar must be 2MB or smaller')
-    } else {
-      setAvatar(file)
+      return
+    }
+    try {
+      setAvatar(await shrinkImage(file))
       setAvatarError('')
+    } catch {
     }
   }
 
   async function onSubmit(e) {
     e.preventDefault()
-    if (inFlight.current || avatarError || !validateAll()) return
-    inFlight.current = true
-    setLoading(true)
-    setFormError('')
+    if (inFlight.current || !validateAll()) return
+      inFlight.current = true
+      setLoading(true)
+      setFormError('')
+      setAvatarError('')
     try {
       const fd = new FormData()
       Object.entries(values).forEach(([k, v]) => fd.append(k, v))
