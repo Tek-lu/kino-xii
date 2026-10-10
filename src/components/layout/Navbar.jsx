@@ -5,6 +5,7 @@ import logo from '../../assets/logo.svg'
 import ticketIcon from '../../assets/property1_ticket.svg'
 import logoutIcon from '../../assets/log_out.svg'
 import SearchBox from './SearchBox'
+import UserMenu from './UserMenu'
 
 
 export default function Navbar() {
@@ -51,7 +52,7 @@ export default function Navbar() {
     </button>
   </>
 )}
-
+{user && <UserMenu />}
         </div>
       </div>
     </header>

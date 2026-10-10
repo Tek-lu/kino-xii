@@ -6,6 +6,7 @@ import { useForm } from '../../hooks/useForm'
 import { useAuth } from '../../hooks/useAuth'
 import { register } from '../../api/auth'
 import { emailRule, passwordRule, required } from '../../utils/validators'
+import { shrinkImage } from '../../utils/image'
 const ALLOWED = ['image/jpeg', 'image/png', 'image/webp']
 
 const rules = {
@@ -46,6 +47,9 @@ export default function RegisterModal() {
       setAvatar(await shrinkImage(file))
       setAvatarError('')
     } catch {
+      setAvatar(null)
+      setAvatarError("Couldn't read this image. Try another one.")
+  
     }
   }
 
