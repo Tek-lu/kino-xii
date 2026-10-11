@@ -59,7 +59,7 @@ export default function Hero() {
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <AgeBadge className='h-[1.7rem] w-[2.875rem] px-3 py-0.6' rating={film.ageRating} />
           <span className="rounded-full bg-tint-white px-[0.625rem] py-[0.3125rem] text-[0.75rem] font-semibold flex">
-                <img src={TimerLogo} alt="" aria-hidden="true" className="h-[0.75rem] w-[0.75rem] mt-[3.5px]"/>
+                <img src={TimerLogo} alt="" aria-hidden="true" className="h-[0.75rem] w-[0.75rem] mt-[2.5px]"/>
 
               {film.runtimeMinutes} Min
           </span>

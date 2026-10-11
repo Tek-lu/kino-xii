@@ -78,7 +78,6 @@ function BookingFlow({ session, onClose }) {
     refetchOnMount: 'always',
   })
 
-  // Any way of closing unmounts this component; release a hold that was not paid
   useEffect(
     () => () => {
       if (holdRef.current) releaseHold(holdRef.current).catch(() => {})
@@ -91,7 +90,6 @@ function BookingFlow({ session, onClose }) {
     setHold(h)
   }
 
-  // ---------- derived ----------
   const { minAge, code: ratingCode } = session.movie.ageRating
   const ageBlocked = user.age != null && user.age < minAge
   const typeOf = (slug) => ticketTypes.find((t) => t.slug === slug)
@@ -310,34 +308,48 @@ function BookingFlow({ session, onClose }) {
                   Pick up to {maxSeatsPerOrder} seats from the map. Each seat can carry its own ticket type.
                 </p>
               ) : (
-                <ul className="mt-[1rem] flex flex-col gap-[0.75rem]">
+                <ul className="no-scrollbar mt-[1rem] flex max-h-[26rem] flex-col gap-[0.75rem] overflow-y-auto">
                   {selected.map((s) => (
-                    <li key={s.seat.id} className="flex items-center gap-[0.5rem] text-[0.75rem]">
-                      <span className="w-[3rem]">
-                        <span className="block font-extrabold">{s.seat.code}</span>
-                        <span className="block text-tx-gray">{s.section}</span>
-                      </span>
-                      <select
-                        value={s.ticketType}
-                        onChange={(e) => changeType(s.seat.id, e.target.value)}
-                        className="flex-1 rounded-[0.5rem] bg-bg-brighter px-[0.5rem] py-[0.375rem] font-semibold outline-none"
-                      >
-                        {allowedTypes.map((t) => (
-                          <option key={t.slug} value={t.slug}>{t.name}</option>
-                        ))}
-                      </select>
-                      <span className="w-[3rem] text-right font-semibold">{money(priceOf(s.ticketType))}</span>
-                      <button
-                        type="button"
-                        aria-label={`Remove seat ${s.seat.code}`}
-                        onClick={() => toggleSeat(s.seat, s.section)}
-                        className="text-tx-gray hover:text-tx-white"
-                      >
-                        ✕
-                      </button>
+                    <li key={s.seat.id} className="rounded-[1rem] bg-bg-medium p-[1rem]">
+                      <div className="flex items-center justify-between border-b border-bg-brighter pb-[0.75rem] text-[0.875rem]">
+                        <span className="flex items-center gap-[0.75rem]">
+                          <span className="text-tx-gray">Seat</span>
+                          <span className="font-extrabold">{s.seat.code}</span>
+                        </span>
+                        <span className="flex items-center gap-[0.75rem]">
+                          <span className="font-extrabold">{money(priceOf(s.ticketType))}</span>
+                          <button
+                            type="button"
+                            aria-label={`Remove seat ${s.seat.code}`}
+                            onClick={() => toggleSeat(s.seat, s.section)}
+                            className="text-tx-gray hover:text-tx-white"
+                          >
+                            ✕
+                          </button>
+                        </span>
+                      </div>
+                  
+                      <div className="mt-[0.75rem] flex gap-[0.5rem]">
+                        {allowedTypes.map((t) => {
+                          const on = s.ticketType === t.slug
+                          return (
+                            <button
+                              key={t.slug}
+                              type="button"
+                              aria-pressed={on}
+                              onClick={() => changeType(s.seat.id, t.slug)}
+                              className={`flex-1 rounded-full px-[0.5rem] py-[0.5rem] text-[0.75rem] font-semibold transition-colors ${
+                                on ? 'bg-hc-red text-tx-white' : 'bg-bg-brighter text-tx-white hover:opacity-90'
+                              }`}
+                            >
+                              {t.name} {Math.round(t.priceRatio * 100)}%
+                            </button>
+                          )
+                        })}
+                      </div>
                     </li>
                   ))}
-                </ul>
+            </ul>
               )}
 
               <div className="mt-[1rem] flex flex-col gap-[0.5rem] text-[0.75rem] text-hc-red">

@@ -3,7 +3,7 @@ import AgeBadge from '../ui/AgeBadge'
 
 export default function MovieCard({ movie }) {
   return (
-    <article className="flex h-[28.25rem] w-[16.25rem] shrink-0 flex-col gap-2 rounded-[1.25rem] bg-bg-medium p-4">
+    <article className="flex h-[30rem] w-[16.25rem] shrink-0 flex-col gap-1 rounded-[1.25rem] bg-bg-medium p-4">
       <Link to={`/movies/${movie.slug}`}>
         <img
           src={movie.posterUrl}

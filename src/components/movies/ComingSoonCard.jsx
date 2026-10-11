@@ -41,7 +41,7 @@ export default function ComingSoonCard({ movie }) {
         >
 
 
-                {done ? 'Notified' : notify.isPending ? 'Saving…' : <><img src={BellLogo} alt="" aria-hidden="true" className="h-[0.75rem] w-[0.75rem] mt-[3.5px]"/> 'Notify Me'</>}
+                {done ? 'Notified' : notify.isPending ? 'Saving…' : <><img src={BellLogo} alt="" aria-hidden="true" className="h-[0.75rem] w-[0.75rem] mt-[3.5px]"/> Notify Me</>}
 
         </button>
       </div>

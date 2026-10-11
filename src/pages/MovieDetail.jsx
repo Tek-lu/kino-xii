@@ -12,7 +12,7 @@ import ErrorState from '../components/ui/ErrorState'
 import Button from '../components/ui/Button'
 import { useEffect, useState } from 'react'   
 import { addRecent } from '../utils/recent'
-import BellLogo from '../../assets/bell.svg'
+import BellLogo from '../assets/bell.svg'
 
 function NotifyBlock({ movie }) {
   const { requireAuth } = useAuth()
@@ -33,7 +33,7 @@ function NotifyBlock({ movie }) {
         disabled={movie.isNotified}
         onClick={() => requireAuth(() => notify.mutate())}
       >
-        {movie.isNotified ? 'Notified' :  <><img src={BellLogo} alt="" aria-hidden="true" className="h-[0.75rem] w-[0.75rem] mt-[3.5px]"/> 'Notify Me'</>}
+        {movie.isNotified ? 'Notified' :  <><img src={BellLogo} alt="" aria-hidden="true" className="h-[0.75rem] w-[0.75rem] mt-[3.5px]"/> Notify Me</>}
       </Button>
     </div>
   )

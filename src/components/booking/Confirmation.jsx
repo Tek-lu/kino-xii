@@ -1,12 +1,12 @@
 import Button from '../ui/Button'
 import { money } from '../../utils/booking'
-
+import ConfirmLogo from '../../assets/white_confirm.svg'
 export default function Confirmation({ order, onClose, onTickets }) {
   const { session } = order
   return (
     <div className="mx-auto max-w-[32rem] py-[1rem] text-center">
-      <div className="mx-auto grid h-[3.5rem] w-[3.5rem] place-items-center rounded-full bg-tint-green text-[1.5rem] text-hc-green">
-        ✓
+      <div className="mx-auto grid h-[3.5rem] w-[3.5rem] place-items-center rounded-full bg-tint-green ">
+        <img src={ConfirmLogo} alt="" />
       </div>
       <h2 className="mt-[1rem] text-[1.5rem] font-extrabold">Order confirmed</h2>
       <p className="mt-[0.5rem] text-[0.875rem] text-tx-gray">
