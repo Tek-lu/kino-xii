@@ -20,3 +20,6 @@ export const money = (n) => {
   }
   
   export const formatCvv = (v) => v.replace(/\D/g, '').slice(0, 3)
+
+export const startOf = (s) => new Date(`${s.date}T${s.time}:00`)
+export const hasStarted = (s) => startOf(s).getTime() <= Date.now()

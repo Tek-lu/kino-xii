@@ -1,49 +1,31 @@
-import SessionCard from "./SessionCard";
+import SessionCard from './SessionCard'
+import AgeBadge from '../ui/AgeBadge'
+import { useAuth } from '../../hooks/useAuth'
 
-export default function MovieSessionRow({ movie }) {
-    return (
-        <div className="flex flex-col gap-y-[0.875rem] border-b border-bg-brighter pb-[1.5rem]">
+export default function MovieSessionRow({ group }) {
+  const { movie, sessions } = group
+  const { user } = useAuth()
+  const ageBlocked = !!user && user.age != null && user.age < movie.ageRating.minAge
+  const reason = `This film is rated ${movie.ageRating.code}. You cannot buy tickets for it with this account.`
 
-            {/* Movie information */}
-            <div className="flex items-center gap-[1rem] mb-[0.75rem]">
-
-                {/* Poster */}
-                <img
-                    src={movie.movie.posterUrl}
-                    alt={movie.movie.title}
-                    className="w-[3.5rem] h-[5rem] rounded-[0.5rem] object-cover"
-                />
-
-                {/* Title + duration */}
-                <div className="flex flex-col gap-[0.75rem]">
-
-                    <div className="flex items-center gap-[0.75rem]">
-                        <h2 className="font-extrabold text-[1.125rem]">
-                            {movie.movie.title}
-                        </h2>
-
-                        {movie.movie.ageRating?.code && (
-                            <span className="text-hc-red bg-tint-pink rounded-full px-[0.5rem] py-[0.25rem] text-[0.75rem] font-semibold">
-                                {movie.movie.ageRating.code}
-                            </span>
-                        )}
-                    </div>
-
-                    <span className="text-tx-gray text-[0.875rem] font-normal">
-                        {movie.movie.runtimeMinutes} min
-                    </span>
-                </div>
-            </div>
-
-            {/* Showtimes */}
-            <div className="flex gap-[0.75rem] overflow-hidden">
-                {movie.sessions.map((session) => (
-                    <SessionCard
-                        key={session.id}
-                        session={session}
-                    />
-                ))}
-            </div>
+  return (
+    <div className="flex flex-col gap-y-[0.875rem] border-b border-bg-brighter pb-[1.5rem]">
+      <div className="mb-[0.75rem] flex items-center gap-[1rem]">
+        <img src={movie.posterUrl} alt={movie.title} className="h-[5rem] w-[3.5rem] rounded-[0.5rem] object-cover" />
+        <div className="flex flex-col gap-[0.75rem]">
+          <div className="flex items-center gap-[0.75rem]">
+            <h2 className="text-[1.125rem] font-extrabold">{movie.title}</h2>
+            <AgeBadge rating={movie.ageRating} />
+          </div>
+          <span className="text-[0.875rem] font-normal text-tx-gray">{movie.runtimeMinutes} min</span>
         </div>
-    );
+      </div>
+
+      <div className="no-scrollbar flex gap-[0.75rem] overflow-x-auto">
+        {sessions.map((s) => (
+          <SessionCard key={s.id} session={s} blocked={ageBlocked} reason={reason} />
+        ))}
+      </div>
+    </div>
+  )
 }
