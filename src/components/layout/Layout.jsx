@@ -4,13 +4,14 @@ import Footer from './Footer'
 
 export default function Layout() {
   const { pathname } = useLocation()
-  const isHome = pathname === '/'
+  const overlay = pathname === '/' || pathname.startsWith('/movies/')
+
 
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
       {/* Home hero sits under the transparent navbar; other pages need room for it */}
-      <main className={`flex-1 ${isHome ? '' : 'pt-20'}`}>
+      <main className={`flex-1 ${overlay ? '' : 'pt-20'}`}>
         <Outlet />
       </main>
       <Footer />
