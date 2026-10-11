@@ -4,12 +4,13 @@ import { useAuth } from '../../hooks/useAuth'
 import { displayName, fullDisplayName, initials } from '../../utils/user'
 import arrowDown from '../../assets/arrow.svg'
 import ticketIcon from '../../assets/property1_ticket.svg'
-import logoutIcon from '../../assets/log_out.svg'
+import logoutIcon from '../../assets/logout2.svg'
+import CheckIcon from '../../assets/green_check.svg'
 
 function Avatar({ user, className = 'h-[2.75rem] w-[2.75rem]' }) {
   const { profileComplete } = useAuth()
   return (
-    <span className={`relative grid shrink-0 place-items-center rounded-[0.5rem] bg-bg-medium text-[0.75rem] font-extrabold ${className}`}>
+    <span className={`relative grid shrink-0 h-[2.5rem] w-[2.5rem] place-items-center rounded-[0.5rem] bg-bg-medium text-[0.75rem] font-semibold ${className}`}>
       {user.avatar ? (
         <img src={user.avatar} alt="" className="h-full w-full rounded-[0.5rem] object-cover" />
       ) : (
@@ -60,7 +61,7 @@ export default function UserMenu() {
         className="flex items-center gap-[0.75rem]"
       >
         <Avatar user={user} />
-        <span className="text-[0.875rem] font-extrabold">{displayName(user)}</span>
+        <span className="text-[0.875rem] font-semibold">{displayName(user)}</span>
         <img src={arrowDown} alt="" className={`w-[0.75rem] transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
 
@@ -82,8 +83,8 @@ export default function UserMenu() {
               profileComplete ? 'bg-tint-green text-hc-green' : 'bg-hc-orange/10 text-hc-orange'
             }`}
           >
-            <p className="text-[0.75rem] font-extrabold">
-              {profileComplete ? 'Profile complete ✓' : 'Profile incomplete'}
+            <p className="text-[0.75rem] font-extrabold flex gap-2">
+              {profileComplete ?<>Profile complete <img src={CheckIcon} alt="" aria-hidden="true" className="h-[0.75rem] w-[0.75rem] mt-[3.5px]"/></>  : 'Profile incomplete'}
             </p>
             {!profileComplete && (
               <p className="mt-[0.125rem] text-[0.75rem] text-tx-gray">

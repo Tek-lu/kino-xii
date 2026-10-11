@@ -1,4 +1,4 @@
-import { money } from '../../utils/booking'
+import { money, startOf } from '../../utils/booking'
 import AgeBadge from '../ui/AgeBadge'
 
 const shortDate = (d) =>
@@ -17,9 +17,11 @@ function Info({ label, children }) {
 
 export default function TicketCard({ order, onRefund }) {
   const { session: s, tickets } = order
-  const start = new Date(`${s.date}T${s.time}:00`)
-  const cutoff = new Date(start.getTime() - 2 * 60 * 60 * 1000) // display only; the button obeys isRefundable
+  const start = startOf(s)
+  const cutoff = new Date(start.getTime() - 2 * 60 * 60 * 1000)
   const refunded = order.status === 'refunded'
+  // the server's clock is 4h late, so require both the server flag and the local cutoff
+  const refundable = order.isRefundable && Date.now() < cutoff.getTime()
 
   return (
     <article className="flex overflow-hidden rounded-[1.5rem] bg-bg-medium">
@@ -71,15 +73,15 @@ export default function TicketCard({ order, onRefund }) {
           <>
             <button
               type="button"
-              disabled={!order.isRefundable}
-              title={order.isRefundable ? undefined : 'Refunds close 2 hours before the session starts'}
+              disabled={!refundable}
+              title={refundable ? undefined : 'Refunds close 2 hours before the session starts'}
               onClick={() => onRefund(order)}
               className="rounded-full bg-bg-brighter py-[0.5rem] text-[0.75rem] font-semibold transition-opacity hover:opacity-90 disabled:opacity-40"
             >
               Refund
             </button>
             <p className="text-center text-[0.625rem] text-tx-gray">
-              {order.isRefundable
+              {refundable
                 ? `Refundable until ${hhmm(cutoff)}, ${shortDate(cutoff)}`
                 : 'Refunds closed 2 hours before the session'}
             </p>

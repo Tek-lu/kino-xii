@@ -1,18 +1,19 @@
 import { useBooking } from '../../context/bookingContext'
-import { money } from '../../utils/booking'
 import Skeleton from '../ui/Skeleton'
 import ErrorState from '../ui/ErrorState'
 import EmptyState from '../ui/EmptyState'
 import TicketLogo from "../../assets/property1_ticket.svg"
+import { money, hasStarted } from '../../utils/booking'
 
 function SessionTile({ s, blocked, reason }) {
   const { openBooking } = useBooking()
+  const started = hasStarted(s)
 
   return (
     <button
       type="button"
-      disabled={s.isSoldOut || blocked}
-      title={blocked ? reason : s.isSoldOut ? 'Sold out' : undefined}
+      disabled={s.isSoldOut || blocked || started}
+      title={started ? 'This session has already started' : blocked ? reason : s.isSoldOut ? 'Sold out' : undefined}
       onClick={() => openBooking(s.id)}
       className="flex h-[81px] w-fit shrink-0 overflow-hidden rounded-xl bg-bg-darkest text-left transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
     >

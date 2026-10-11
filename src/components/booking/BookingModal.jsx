@@ -14,7 +14,7 @@ import { useForm } from '../../hooks/useForm'
 import { useCountdown } from '../../hooks/useCountdown'
 import { getSession, getSeats, holdSeats, releaseHold, createOrder } from '../../api/booking'
 import { emailRule, nameRule, mobileRule, cardRule, expiryRule, cvvRule } from '../../utils/validators'
-import { money, priceFor, fmtTime } from '../../utils/booking'
+import { money, priceFor, fmtTime, hasStarted } from '../../utils/booking'
 
 const checkoutRules = {
   fullName: nameRule,
@@ -78,6 +78,7 @@ function BookingFlow({ session, onClose }) {
     refetchOnMount: 'always',
   })
 
+  // any way of closing unmounts this component: release an unpaid hold
   useEffect(
     () => () => {
       if (holdRef.current) releaseHold(holdRef.current).catch(() => {})
@@ -90,8 +91,10 @@ function BookingFlow({ session, onClose }) {
     setHold(h)
   }
 
+  // ---------- derived ----------
   const { minAge, code: ratingCode } = session.movie.ageRating
   const ageBlocked = user.age != null && user.age < minAge
+  const started = hasStarted(session) // server clock is 4h late, so check locally
   const typeOf = (slug) => ticketTypes.find((t) => t.slug === slug)
   const isBlocked = (t) => t.blockedFromRatingAge != null && minAge >= t.blockedFromRatingAge
   const allowedTypes = ticketTypes.filter((t) => !isBlocked(t))
@@ -103,6 +106,7 @@ function BookingFlow({ session, onClose }) {
   const subtotal =
     step === 2 && hold ? hold.subtotal : selected.reduce((sum, s) => sum + priceOf(s.ticketType), 0)
   const canContinue =
+    !started &&
     user.profileComplete &&
     !ageBlocked &&
     selected.length > 0 &&
@@ -181,7 +185,7 @@ function BookingFlow({ session, onClose }) {
   // ---------- step 2: pay ----------
   async function pay(e) {
     e.preventDefault()
-    if (lock.current || !hold || !form.validateAll()) return
+    if (lock.current || !hold || started || !form.validateAll()) return
     lock.current = true
     setBusy(true)
     setBanner('')
@@ -220,7 +224,7 @@ function BookingFlow({ session, onClose }) {
         onClose={onClose}
         onTickets={() => {
           onClose()
-          navigate('/profile')
+          navigate('/profile?tab=tickets')
         }}
       />
     )
@@ -328,7 +332,7 @@ function BookingFlow({ session, onClose }) {
                           </button>
                         </span>
                       </div>
-                  
+
                       <div className="mt-[0.75rem] flex gap-[0.5rem]">
                         {allowedTypes.map((t) => {
                           const on = s.ticketType === t.slug
@@ -349,10 +353,11 @@ function BookingFlow({ session, onClose }) {
                       </div>
                     </li>
                   ))}
-            </ul>
+                </ul>
               )}
 
               <div className="mt-[1rem] flex flex-col gap-[0.5rem] text-[0.75rem] text-hc-red">
+                {started && <p>This session has already started.</p>}
                 {violations.map((s) => (
                   <p key={s.seat.id}>Seat {s.seat.code}: child tickets are not available for {ratingCode} films.</p>
                 ))}
@@ -393,7 +398,7 @@ function BookingFlow({ session, onClose }) {
               </Button>
             ) : (
               <div className="flex flex-col gap-[0.5rem]">
-                <Button type="submit" form="checkout-form" className="w-full py-[0.75rem]" loading={busy}>
+                <Button type="submit" form="checkout-form" className="w-full py-[0.75rem]" loading={busy} disabled={started}>
                   Pay: Complete order
                 </Button>
                 <Button variant="ghost" className="w-full" disabled={busy} onClick={() => setStep(1)}>

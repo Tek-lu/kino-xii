@@ -53,7 +53,7 @@ export default function SearchBox() {
 
   return (
     <div ref={ref} className="relative w-[20rem]">
-      <label className="flex items-center gap-2 rounded-full bg-tint-white px-4 py-2 text-tx-gray focus-within:ring-1 focus-within:ring-tx-gray">
+      <label className="flex items-center gap-2 h-[2.55rem] rounded-full bg-tint-white px-4 py-2 text-tx-gray focus-within:ring-1 focus-within:ring-tx-gray">
         <img src={searchIcon} alt="" aria-hidden="true" />
         <input
           type="search"
