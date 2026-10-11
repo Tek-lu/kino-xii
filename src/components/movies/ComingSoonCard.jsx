@@ -23,7 +23,7 @@ export default function ComingSoonCard({ movie }) {
         src={movie.posterUrl}
         alt={movie.title}
         loading="lazy"
-        className="h-[8.5] w-[14.3rem] rounded-[14px] object-cover"
+        className="h-[8.5rem] w-[14.3rem] rounded-[14px] object-cover"
       />
       <div className="flex min-w-0 flex-1 flex-col">
         <p className="text-3 font-semibold text-hc-red">IN CINEMAS {fmt(movie.releaseDate)}</p>
